@@ -91,8 +91,8 @@ t_conjunto op_add(t_conjunto c,char valor[MAX])//esta pasando un parametro de es
     {
         if(pertenece(c,valor)==-1)
          {
-			strcpy(c.elementos,valor);
-			 // c.elementos = valor;//CONTROLAR AKI QUE GUARDA
+			//strcpy(c.elementos,valor);
+			 c.elementos [c.numElem]= * valor;//CONTROLAR AKI QUE GUARDA
              c.numElem++;
          }  
         else
@@ -151,13 +151,13 @@ bool op_comp(t_conjunto A,t_conjunto B)
 void mostrar(t_conjunto c)
 {
 	printf ("{ ");           
-	for(int i=0;i<c.numElem;i++)
+	for(int i=0;i<c.numElem-1;i++)
 	{
-		printf("%i:%s;",i,c.elementos);//aqui muestra mal
+		printf("%i:%c;",i,c.elementos[i]);//aqui muestra mal
 	}  
 	if(c.numElem>0)
 	{
-		printf("%i:%s;",c.numElem-1,c.elementos);
+		printf("%i:%c;",c.numElem-1,c.elementos[c.numElem-1]);
 	}
 	printf(" }");
 }
