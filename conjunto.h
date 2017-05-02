@@ -1,19 +1,29 @@
-#ifndef CONJUNTO_H
-#define CONJUNTO_H
-#include <stdio.h>
-#include <string.h>
 
-
-typedef int Item;
+typedef char* Item;
 
 typedef struct nodo{
 	Item elemento;
-	struct nodo * siguiente;//este tipo de dato apunta a otro nodo
-               }NODO;
+	struct nodo *siguiente;//este tipo de dato apunta a otro nodo
+}NODO;
 
+typedef struct{
+	struct nodo *primero;
+	struct nodo *ultimo;
+}CONJUNTO;
 
-void Inicia(NODO **);//inicializa la cabeza de la lista
-void Cargar_nodo(Item,NODO **);
-void Eliminar_nodo_enpos(NODO **, int);
-void Mostrar_elem(NODO *);
-#endif
+//basicos
+void Inicia(CONJUNTO *);					// inicializa conjunto
+CONJUNTO operator+(CONJUNTO,Item);			// agregar un elemento
+CONJUNTO operator-(CONJUNTO,Item);			// retirar un elemento
+
+//operaciones
+CONJUNTO operator+(CONJUNTO,CONJUNTO);		// union de conjuntos 
+CONJUNTO operator*(CONJUNTO,CONJUNTO);		// interseccion de conjuntos
+CONJUNTO operator-(CONJUNTO,CONJUNTO);		// A-B, diferencia de conjuntos
+
+//logicos
+bool Pertenece(Item,CONJUNTO);	
+bool operator==(CONJUNTO,CONJUNTO);
+
+//salida
+void Mostrar(CONJUNTO);
