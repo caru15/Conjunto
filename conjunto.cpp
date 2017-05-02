@@ -1,68 +1,142 @@
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 #include "conjunto.h"
-#define NULLO
 
-
-void Inicia(NODO ** cabeza)
+void Inicia(CONJUNTO *c)
 {
-	*cabeza= NULL;
-	//ultimo= NULL;
-}
-void Cargar_nodo(Item entrada,NODO ** cab)
-{
-	NODO * nodo;
-    
-	nodo=(NODO *) malloc(sizeof(NODO));
-	//strcpy(nodo->siguiente,entrada);
-	nodo->elemento = entrada;
-	nodo->siguiente=*cab;
-	*cab=nodo;
+	c->primero = NULL;
+	c->ultimo  = NULL;
 }
 
-void Eliminar_nodo_enpos(NODO ** ca, int i)
-	
+bool Pertenece(Item e,CONJUNTO c)
 {
-	int k=0;
-	NODO * ptr,*ult;
-	ptr=*ca;
-	ult=NULL;
-	while((k<i)&&(ptr!=NULL))
+	NODO *i = c.primero;
+	while (i != NULL)
 	{
-		k++;
-		ult=ptr;
-		ptr=ptr->siguiente;
+		if (i->elemento == e)
+			return true;
+		i=i->siguiente;
 	}
-	if (k==i)
+	return false;
+}
+
+CONJUNTO operator + (CONJUNTO c,Item e)
+{
+	if (Pertenece(e,c)) return c; //si existe no lo Agrega
+	NODO *n = (NODO *) malloc(sizeof(NODO));
+	n->elemento = e;
+	n->siguiente = NULL;
+	
+	if (c.primero == NULL) //vacio
 	{
-		if (ult==NULL)
-		*ca=ptr->siguiente;
+		c.primero = n;
+		c.ultimo = n;
+	}
 	else
-		{
-		ult->siguiente=ptr->siguiente;
-		free(ptr);
-		return;}
+	{
+		c.ultimo->siguiente = n;
+		c.ultimo = n;		
 	}
-	else printf("No se encontro la posicion %i ",i);
+	
+	return c;
 }
 
-void Mostrar_elem(NODO* ca)
+CONJUNTO operator - (CONJUNTO c,Item e)
 {
+	if (!Pertenece(e,c)) return c; //si no existe sale
 	
-	NODO * auxiliar; /* lo usamos para recorrer la lista */
-	int i;
-	
-	i=0;
-	auxiliar = ca;
-	printf("\nMostrando la lista completa:\n");
-	
-	while((auxiliar)!=NULL){   //for(i==0;i<3;i++) {  //
-		printf( "Elemento: %i,",auxiliar->elemento);
-		auxiliar = auxiliar->siguiente;
-		i++;
+	if (c.primero->elemento == e) //si es el primero
+	{
+		c.primero = c.primero->siguiente;
+		return c;
 	}
-	if (i==0) printf( "\nLa lista está vacía!!\n" );
-	else printf("\n La lista tiene %i elementos.",i);
+	
+	NODO *anterior = NULL;
+	NODO *actual   = c.primero;
+	
+	while (actual != NULL)
+	{
+		if (actual->elemento == e)
+		{
+			anterior->siguiente = actual->siguiente;
+			return c;
+		}
+		anterior = actual;
+		actual   = actual->siguiente;
+	}
+	
+	return c; //en terio no llega aca
 }
 
+CONJUNTO operator+(CONJUNTO a,CONJUNTO b)
+{
+	CONJUNTO c;
+	Inicia(&c);
+	NODO *i = a.primero;
+	while (i != NULL)
+	{
+		c = c + i->elemento;
+		i=i->siguiente;
+	}
+	i = b.primero;
+	while (i != NULL)
+	{
+		c = c + i->elemento;
+		i=i->siguiente;
+	}
+	return c;
+}
+
+CONJUNTO operator*(CONJUNTO a,CONJUNTO b)
+{
+	CONJUNTO c;
+	Inicia(&c);
+	NODO *i = a.primero;
+	while (i != NULL)
+	{
+		if (Pertenece(i->elemento,b)) //pertenece a A y B
+			c = c + i->elemento;
+		i=i->siguiente;
+	}
+	return c;
+}
+
+CONJUNTO operator-(CONJUNTO a,CONJUNTO b)
+{
+	CONJUNTO c;
+	Inicia(&c);
+	NODO *i = a.primero;
+	while (i != NULL)
+	{
+		if (!Pertenece(i->elemento,b)) //no pertenece a B
+			c = c + i->elemento;
+		i=i->siguiente;
+	}	
+	return c;
+}
+
+bool operator==(CONJUNTO a,CONJUNTO b)
+{
+	NODO *i = a.primero;
+	while (i != NULL)
+	{
+		if (!Pertenece(i->elemento,b)) //no pertenece a B
+			return false;
+		i=i->siguiente;
+	}
+	return true;
+}
+
+void Mostrar(CONJUNTO c)
+{
+	printf("{");
+	NODO *i = c.primero;
+	while (i != NULL)
+	{
+		printf("%s",i->elemento);
+		if (i->siguiente !=NULL)//si quedan elementos poner coma
+			printf(",");		
+		i=i->siguiente;
+	}
+	printf("}\n");
+}
