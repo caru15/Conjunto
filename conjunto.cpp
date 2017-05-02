@@ -4,6 +4,7 @@
 
 void Inicia(CONJUNTO *c)
 {
+	c->cant	   = 0;
 	c->primero = NULL;
 	c->ultimo  = NULL;
 }
@@ -37,6 +38,7 @@ CONJUNTO operator + (CONJUNTO c,Item e)
 		c.ultimo->siguiente = n;
 		c.ultimo = n;		
 	}
+	c.cant++;
 	
 	return c;
 }
@@ -64,6 +66,7 @@ CONJUNTO operator - (CONJUNTO c,Item e)
 		anterior = actual;
 		actual   = actual->siguiente;
 	}
+	c.cant--;
 	
 	return c; //en terio no llega aca
 }
@@ -117,7 +120,11 @@ CONJUNTO operator-(CONJUNTO a,CONJUNTO b)
 
 bool operator==(CONJUNTO a,CONJUNTO b)
 {
-	NODO *i = a.primero;
+	NODO *i;
+	if (a.cant >= b.cant) 
+		i = a.primero;
+	else
+		i = b.primero;	
 	while (i != NULL)
 	{
 		if (!Pertenece(i->elemento,b)) //no pertenece a B
@@ -138,5 +145,5 @@ void Mostrar(CONJUNTO c)
 			printf(",");		
 		i=i->siguiente;
 	}
-	printf("}\n");
+	printf("} %d elementos\n",c.cant);
 }

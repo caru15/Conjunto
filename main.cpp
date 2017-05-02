@@ -20,5 +20,8 @@ int main(void)
 	Mostrar(a*b);
 	printf("B-A: ");
 	Mostrar(b-a);
+	printf("A==B: ");
+	if (a==b) printf("TRUE");
+	else printf("FALSE");
 	return(0);
 }

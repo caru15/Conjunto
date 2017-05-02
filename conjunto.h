@@ -7,6 +7,7 @@ typedef struct nodo{
 }NODO;
 
 typedef struct{
+	int cant;
 	struct nodo *primero;
 	struct nodo *ultimo;
 }CONJUNTO;
