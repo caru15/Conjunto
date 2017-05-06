@@ -1,3 +1,5 @@
+#ifndef MY_HEADER_FILE_
+#define MY_HEADER_FILE_
 
 typedef char* Item;
 
@@ -25,6 +27,9 @@ CONJUNTO operator-(CONJUNTO,CONJUNTO);		// A-B, diferencia de conjuntos
 //logicos
 bool Pertenece(Item,CONJUNTO);	
 bool operator==(CONJUNTO,CONJUNTO);
+bool Contiene(CONJUNTO,CONJUNTO);
 
 //salida
 void Mostrar(CONJUNTO);
+
+#endif

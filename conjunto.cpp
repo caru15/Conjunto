@@ -134,9 +134,22 @@ bool operator==(CONJUNTO a,CONJUNTO b)
 	return true;
 }
 
+bool Contiene(CONJUNTO a,CONJUNTO b)
+{
+	NODO *i;
+	i = a.primero;
+	while (i != NULL)
+	{
+		if (!Pertenece(i->elemento,b)) //no pertenece a B
+			return false;
+		i=i->siguiente;
+	}
+	return true;
+}
+
 void Mostrar(CONJUNTO c)
 {
-	printf("{");
+	printf("(%d elementos)\n{",c.cant);
 	NODO *i = c.primero;
 	while (i != NULL)
 	{
@@ -145,5 +158,5 @@ void Mostrar(CONJUNTO c)
 			printf(",");		
 		i=i->siguiente;
 	}
-	printf("} %d elementos\n",c.cant);
+	printf("}\n");
 }
