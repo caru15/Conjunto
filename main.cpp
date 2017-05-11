@@ -1,8 +1,23 @@
 #include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 #include "conjunto.h"
 #include "conjunto_d.h"
 #include "automata.h"
+
+using namespace std;
+
+void pausa()
+
+{
+	
+	cout << "Pulsa una tecla para continuar...";
+	
+	getwchar();
+	
+	getwchar();
+	
+}
 
 void ejemplo1()
 {
@@ -85,8 +100,129 @@ void ejemplo2()
 
 int main(void)
 {
-	ejemplo1();	//determinista
-	printf("\n");
-	ejemplo2(); //no determinista
-	return(0);
+//	ejemplo1();	//determinista
+//	printf("\n");
+//	ejemplo2(); //no determinista
+//	return(0);
+	bool bandera=false;
+	char tecla;
+	do
+		
+	{
+		system("cls");
+		cin.clear();
+		printf("\n");
+		printf("\n");
+		
+		cout << " \t    AUTOMATA" << endl;
+		
+		cout << "\t --------------" << endl << endl;
+		
+		cout << "\t1 .- Crear nuevo Automata" << endl;
+		
+		cout <<"\t2 .- Ingrese Cadena de caracteres par ser procesadas por el Automata" <<endl;
+		
+		cout << "\t3 .- Borrar Automata" << endl;
+		
+		cout << "\t4 .- Salir" << endl;
+		
+		cout << "Elije una opcion: ";
+		
+		cin >> tecla;
+		
+		switch(tecla)
+			
+		{
+			
+		case '1':
+			{
+			system("cls");
+			
+			cout << "CREAR NUEVO AUTOMATA.\n";
+			CONJUNTO Q,Z,F;
+			Inicia(&Q);
+			Inicia(&Z);
+			Inicia(&F);
+			cout << "\t1 .- Ingrese los estados de a uno seguida de la tecla enter \n" << endl;
+			cout<<"\t Para finalizar presione 0...\n"<<endl;
+			cin >> tecla;
+			
+			while(tecla!='0')
+			
+			{
+				Q = Q + (Item)tecla;
+			}
+			
+			cout << "\t2 .- Ingrese los estados de aceptacion " << endl;
+			cout<<"\t Para finalizar presione 0...\n"<<endl;
+				cin>> tecla;
+			while(tecla!='0')
+			{
+				F = F + (Item)tecla;
+			}
+			cout << "\t3 .- Ingrese el alfabeto, para finalizar presione 0...\n" << endl;
+			cin>> tecla;
+			while(tecla!='0')
+			{
+				Z = Z+(Item)tecla;
+			}
+			AUTOMATA A ;
+			cout <<"\t4.-Ingrese el estado Inicial...\n "<<endl;
+			cin>> tecla;
+			Item inicial=(Item)tecla;
+			Inicia(&A,Q,Z,inicial,F);
+			cout <<"\t5 .- Ingrese las funciones de transiciones del Automata..\n"<<endl;
+			cin>>tecla;
+			pausa();
+			break;
+		}
+			
+		case '2':
+			
+			system("cls");
+			
+			cout << "PROCESAR CADENA.\n";
+			
+			pausa();
+			
+			break;
+			
+		case '3':
+			
+			system("cls");
+			
+			cout << "BORRAR AUTOMATA.\n";
+			
+			pausa();
+			
+			break;
+			
+			
+		case '4':
+			
+			bandera=true;
+			
+			
+			break;
+			
+			
+		default:
+			
+			system("cls");
+			
+			cout << "Opcion no valida.\a\n";
+			
+			pausa();
+			
+			break;
+			
+		}
+		
+	}while(bandera!=true);
+	
+	
+	
+	return (0);
+	
 }
+

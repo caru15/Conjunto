@@ -29,7 +29,7 @@ cursor=88:28
 open=true
 [source]
 path=main.cpp
-cursor=74:21
+cursor=199:3
 open=true
 [header]
 path=conjunto.h
