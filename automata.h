@@ -10,7 +10,8 @@ typedef struct{
 }AUTOMATA;
 
 //basicos
-void Inicia(AUTOMATA *, CONJUNTO, CONJUNTO, Item, CONJUNTO);
+void Inicia(AUTOMATA *);
+bool Inicia(AUTOMATA *, CONJUNTO, CONJUNTO, Item, CONJUNTO);
 void d(AUTOMATA *,Item,Item,Item);	
 
 //delta

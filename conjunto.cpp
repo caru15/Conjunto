@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <cstring>
 #include "conjunto.h"
 
 void Inicia(CONJUNTO *c)
@@ -14,7 +15,7 @@ bool Pertenece(Item e,CONJUNTO c)
 	NODO *i = c.primero;
 	while (i != NULL)
 	{
-		if (i->elemento == e)
+		if (strcmp(i->elemento, e)==0)
 			return true;
 		i=i->siguiente;
 	}
@@ -149,7 +150,7 @@ bool Contiene(CONJUNTO a,CONJUNTO b)
 
 void Mostrar(CONJUNTO c)
 {
-	printf("(%d elementos)\n{",c.cant);
+	printf("{");
 	NODO *i = c.primero;
 	while (i != NULL)
 	{
@@ -158,5 +159,5 @@ void Mostrar(CONJUNTO c)
 			printf(",");		
 		i=i->siguiente;
 	}
-	printf("}\n");
+	printf("}(%d elementos)",c.cant);
 }

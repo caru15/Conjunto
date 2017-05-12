@@ -5,22 +5,30 @@
 #include "conjunto_d.h"
 #include "automata.h"
 
-void Inicia(AUTOMATA *A, CONJUNTO Q, CONJUNTO Z, Item q, CONJUNTO F)
+void Inicia(AUTOMATA *A)
 {
+	Inicia(&A->alfabeto);
+	Inicia(&A->estados);
+	Inicia(&A->c_final);
+	Inicia(&A->d);
+	A->e_ini="";
+}
+
+bool Inicia(AUTOMATA *A, CONJUNTO Q, CONJUNTO Z, Item q, CONJUNTO F)
+{
+	A->estados  = Q;		
+	A->alfabeto = Z;		
+	A->e_ini    = q;		
+	A->c_final  = F;
+	Inicia(&A->d);
 	if ( Q.cant > 0 and //conjunto no vacio de estado
 		 Z.cant > 0 and //conjunto no vacio de simbolos
 		 Pertenece(q,Q) and //estado inicial pertenece al conjunto de estados
 		 Contiene(F,Q) //conjunto de estados finales contenido en conjunto de estados
 		)
-	{
-		A->estados  = Q;		
-		A->alfabeto = Z;		
-		A->e_ini    = q;		
-		A->c_final  = F;
-		Inicia(&A->d);
-	}
-	else
-		printf("ERROR AUTOMATA \n");
+		return true;
+	printf("AUTOMATA CON ERRORES \n");
+	return false;
 }
 
 void d(AUTOMATA *A,Item p,Item z,Item q)
@@ -155,9 +163,19 @@ CONJUNTO Qfinal(Item z, CONJUNTO_D d)
 
 void Mostrar(AUTOMATA A)
 {
-	printf("\n ESTADOS: "); Mostrar(A.estados);
-	printf("\n ALFABETO: "); Mostrar(A.alfabeto);
+	if ( A.estados.cant > 0 and //conjunto no vacio de estado
+		 A.alfabeto.cant > 0 and //conjunto no vacio de simbolos
+		 Pertenece(A.e_ini, A.estados) and //estado inicial pertenece al conjunto de estados
+		 Contiene(A.c_final, A.estados) and//conjunto de estados finales contenido en conjunto de estados
+		 A.d.cant > 0 //conjunto no vacio de transiciones
+		)
+		printf("\n\t AUTOMATA \n");
+	else
+		printf("\n\t AUTOMATA CON ERRORES \n");
+	
+	printf("\n ESTADOS: \n\t"); Mostrar(A.estados);	
+	printf("\n ALFABETO: \n\t"); Mostrar(A.alfabeto);
 	printf("\n ESTADO INICIAL: %s\n",A.e_ini);
-	printf("\n CONJUNTO DE ACEPTACION: "); Mostrar(A.c_final);
-	printf("\n FUNCION DE TRANSICION: "); Mostrar(A.d);
+	printf("\n CONJUNTO DE ACEPTACION: \n\t"); Mostrar(A.c_final);
+	printf("\n FUNCION DE TRANSICION: \n"); Mostrar(A.d);
 }

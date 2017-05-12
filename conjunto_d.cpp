@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <cstring>
 #include "conjunto_d.h"
 
 void Inicia(CONJUNTO_D *c)
@@ -14,9 +15,9 @@ bool Pertenece(delta *d,CONJUNTO_D c)
 	DELTA *i = c.primero;
 	while (i != NULL)
 	{
-		if ((i->estadoI == d->estadoI) and
-			(i->simbolo == d->simbolo) and
-			(i->estadoF == d->estadoF))
+		if ((strcmp(i->estadoI, d->estadoI)==0) and
+			(strcmp(i->simbolo, d->simbolo)==0) and
+			(strcmp(i->estadoF, d->estadoF)==0))
 			return true;
 		i=i->siguiente;
 	}

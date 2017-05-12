@@ -1,23 +1,12 @@
 #include <stdio.h>
 #include <iostream>
 #include <stdlib.h>
+#include <cstring>
 #include "conjunto.h"
 #include "conjunto_d.h"
 #include "automata.h"
 
 using namespace std;
-
-void pausa()
-
-{
-	
-	cout << "Pulsa una tecla para continuar...";
-	
-	getwchar();
-	
-	getwchar();
-	
-}
 
 void ejemplo1()
 {
@@ -105,124 +94,148 @@ int main(void)
 //	ejemplo2(); //no determinista
 //	return(0);
 	bool bandera=false;
-	char tecla;
+	char op;
+	Item tecla;
+	AUTOMATA A ;		
+	Inicia(&A);
 	do
-		
 	{
 		system("cls");
 		cin.clear();
 		printf("\n");
-		printf("\n");
 		
-		cout << " \t    AUTOMATA" << endl;
-		
-		cout << "\t --------------" << endl << endl;
-		
-		cout << "\t1 .- Crear nuevo Automata" << endl;
-		
-		cout <<"\t2 .- Ingrese Cadena de caracteres par ser procesadas por el Automata" <<endl;
-		
-		cout << "\t3 .- Borrar Automata" << endl;
-		
-		cout << "\t4 .- Salir" << endl;
-		
+		cout << "\t    AUTOMATA" << endl;
+		cout << "\t --------------" << endl;
+		cout << "\t 1 .- Crear nuevo Automata" << endl;
+		cout << "\t 2 .- Mostrar Automata" << endl;
+		cout << "\t 3 .- Procesar Cadena" << endl;
+		cout << "\t 4 .- Borrar Automata" << endl;
+		cout << "\t 5 .- Salir" << endl;
 		cout << "Elije una opcion: ";
 		
-		cin >> tecla;
-		
-		switch(tecla)
-			
+		cin >> op;
+		switch(op)
 		{
-			
-		case '1':
+			case '1':
 			{
-			system("cls");
-			
-			cout << "CREAR NUEVO AUTOMATA.\n";
-			CONJUNTO Q,Z,F;
-			Inicia(&Q);
-			Inicia(&Z);
-			Inicia(&F);
-			cout << "\t1 .- Ingrese los estados de a uno seguida de la tecla enter \n" << endl;
-			cout<<"\t Para finalizar presione 0...\n"<<endl;
-			cin >> tecla;
-			
-			while(tecla!='0')
-			
-			{
-				Q = Q + (Item)tecla;
+				system("cls");
+				cout << "\t CREAR NUEVO AUTOMATA." << endl;;
+				
+				CONJUNTO Z,Q,F;
+				Inicia(&Z);
+				Inicia(&Q);				
+				Inicia(&F);
+				
+				cout << "\t 1 .- Ingrese el ALFABETO (de a uno seguido de la tecla enter)" << endl;
+				cout << "\t Para finalizar ingrese *" << endl;
+				cin >> tecla;
+				while(strcmp(tecla,"*")!=0)
+				{					
+					Z = Z + tecla;
+					tecla = (char *) malloc(sizeof(char));
+					cin >> tecla;
+				}
+				
+				cout << "\t 2 .- Ingrese los ESTADOS (de a uno seguido de la tecla enter)" << endl;
+				cout << "\t Para finalizar ingrese *" << endl;
+				cin >> tecla;
+				while(strcmp(tecla,"*")!=0)
+				{
+					Q = Q +  tecla;
+					tecla = (char *) malloc(sizeof(char));
+					cin >> tecla;
+				}
+				
+				cout << "\t 3 .- Ingrese los ESTADOS DE ACEPTACION"  << endl;
+				cout << "\t (de a uno seguido de la tecla enter)" << endl;
+				cout << "\t Para finalizar ingrese *" << endl;
+				cin >> tecla;
+				while(strcmp(tecla,"*")!=0)
+				{
+					F = F +  tecla;
+					tecla = (char *) malloc(sizeof(char));
+					cin >> tecla;
+				}											
+				
+				cout <<"\t 4.-Ingrese el ESTADO INICIAL (seguido de la tecla enter)" << endl;
+				Item q = (char *) malloc(sizeof(char));
+				cin >> q;
+				if (Inicia(&A,Q,Z,q,F))
+				{
+					cout <<"\t FUNCION DE TRANSICION\n" << endl;
+					cout <<"-1)Ingrese ESTADO-ORIGEN (seguido de la tecla enter)" << endl;
+					cout << "(Para finalizar ingrese *): ";
+					cin >> tecla;
+					while(strcmp(tecla,"*")!=0)
+					{
+						cout <<"-2)Ingrese SIGNO (seguido de la tecla enter): ";
+						Item signo = (Item) malloc(sizeof(Item));
+						cin >> signo;
+						cout <<"-3)Ingrese ESTADO-DESTINO (seguido de la tecla enter): ";
+						Item destino = (Item) malloc(sizeof(Item));
+						cin >> destino;
+						d(&A,tecla,signo,destino);
+						tecla = (char *) malloc(sizeof(char));
+						cout <<"-1)Ingrese ESTADO-ORIGEN (seguido de la tecla enter)" << endl;
+						cout << "(Para finalizar ingrese *): ";
+						cin >> tecla;
+					}
+				}
+				else
+					system("pause");
+				break;
 			}
-			
-			cout << "\t2 .- Ingrese los estados de aceptacion " << endl;
-			cout<<"\t Para finalizar presione 0...\n"<<endl;
-				cin>> tecla;
-			while(tecla!='0')
+			case '2':
 			{
-				F = F + (Item)tecla;
+				system("cls");			
+				Mostrar(A);
+				system("pause");
+				break;
 			}
-			cout << "\t3 .- Ingrese el alfabeto, para finalizar presione 0...\n" << endl;
-			cin>> tecla;
-			while(tecla!='0')
+			case '3':
 			{
-				Z = Z+(Item)tecla;
+				system("cls");			
+				cout << "\t PROCESAR CADENA." << endl;
+				cout << "Ingrese una cadena (seguido de la tecla enter): ";
+				cin >> tecla;
+				if (procesar(A,tecla))
+					printf("\nLa cadena: %s a sido Aceptada  por el AUTOMATA\n",tecla);
+				else
+					printf("\nLa cadena: %s a sido Rechazada por el AUTOMATA\n",tecla);
+				system("pause");
+				break;
 			}
-			AUTOMATA A ;
-			cout <<"\t4.-Ingrese el estado Inicial...\n "<<endl;
-			cin>> tecla;
-			Item inicial=(Item)tecla;
-			Inicia(&A,Q,Z,inicial,F);
-			cout <<"\t5 .- Ingrese las funciones de transiciones del Automata..\n"<<endl;
-			cin>>tecla;
-			pausa();
-			break;
+			case '4':
+			{
+				system("cls");
+				cout << "\t BORRAR AUTOMATA." << endl;
+				cout << "Esta seguro de borrar el automata? (S/N): ";
+				cin >> tecla;
+				if(strcmp(tecla,"S")==0)
+				{
+					Inicia(&A);
+					cout << "El automata se a borrado\n";
+				}
+				else
+				   cout << "Cancelado\n\a";
+				system("pause");
+				break;
+			}
+			case '5':
+			{
+				bandera=true;
+				break;
+			}
+			default:
+			{
+				system("cls");			
+				cout << "Opcion no valida.\a" << endl;
+				system("pause");
+				break;
+			}
 		}
-			
-		case '2':
-			
-			system("cls");
-			
-			cout << "PROCESAR CADENA.\n";
-			
-			pausa();
-			
-			break;
-			
-		case '3':
-			
-			system("cls");
-			
-			cout << "BORRAR AUTOMATA.\n";
-			
-			pausa();
-			
-			break;
-			
-			
-		case '4':
-			
-			bandera=true;
-			
-			
-			break;
-			
-			
-		default:
-			
-			system("cls");
-			
-			cout << "Opcion no valida.\a\n";
-			
-			pausa();
-			
-			break;
-			
-		}
-		
-	}while(bandera!=true);
-	
-	
-	
-	return (0);
-	
-}
 
+	} while(bandera!=true);
+	
+	return (0);	
+}
